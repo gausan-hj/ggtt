@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday 洪诗杰 🎉</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+    animation: bgmove 20s infinite alternate;
+    text-align: center;
+  }
+  @keyframes bgmove {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+  h1 {
+    font-size: 50px;
+    color: #fff;
+    text-shadow: 2px 2px 8px #ff6600;
+    margin-top: 80px;
+  }
+  h2 {
+    font-size: 28px;
+    color: #ffe066;
+    text-shadow: 1px 1px 6px #000;
+  }
+
+  /* 气球 */
+  .balloon {
+    position: absolute;
+    bottom: -150px;
+    width: 60px;
+    height: 80px;
+    border-radius: 50%;
+    background: red;
+    animation: float 10s infinite ease-in;
+  }
+  .balloon::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 60px;
+    background: #444;
+    left: 50%;
+    top: 80px;
+  }
+  @keyframes float {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-120vh); }
+  }
+
+  /* 蛋糕 */
+  .cake {
+    margin: 50px auto;
+    width: 200px;
+    height: 120px;
+    background: #8d5524;
+    border-radius: 0 0 20px 20px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+  .cake::before {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 40px;
+    background: #ffb347;
+    top: -40px;
+    border-radius: 20px 20px 0 0;
+  }
+  .candle {
+    width: 10px;
+    height: 40px;
+    background: white;
+    margin: auto;
+    position: relative;
+    top: -80px;
+  }
+  .flame {
+    width: 14px;
+    height: 14px;
+    background: radial-gradient(circle, yellow 60%, orange 100%);
+    border-radius: 50%;
+    position: relative;
+    top: -90px;
+    left: 3px;
+    animation: flicker 1s infinite;
+  }
+  @keyframes flicker {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+  }
+
+  /* 烟花 */
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+</style>
+</head>
+<body>
+  <h1>🎉 Happy Birthday 洪诗杰 🎂</h1>
+  <h2>愿你天天开心，幸福满满！💖</h2>
+
+  <div class="cake">
+    <div class="candle"></div>
+    <div class="flame"></div>
+  </div>
+
+  <!-- 气球们 -->
+  <div class="balloon" style="left:10%; background:#ff6666; animation-duration:12s;"></div>
+  <div class="balloon" style="left:30%; background:#66ccff; animation-duration:10s;"></div>
+  <div class="balloon" style="left:50%; background:#99ff99; animation-duration:14s;"></div>
+  <div class="balloon" style="left:70%; background:#ffcc66; animation-duration:11s;"></div>
+  <div class="balloon" style="left:85%; background:#cc99ff; animation-duration:13s;"></div>
+
+  <!-- 背景音乐 -->
+  <audio autoplay loop>
+    <source src="https://www2.cs.uic.edu/~i101/SoundFiles/HappyBirthday.mid" type="audio/midi">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- 烟花特效 -->
+  <canvas id="fireworks"></canvas>
+  <script>
+    const canvas = document.getElementById('fireworks');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    class Firework {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.particles = [];
+        for (let i = 0; i < 50; i++) {
+          this.particles.push({
+            x: x,
+            y: y,
+            dx: (Math.random() - 0.5) * 6,
+            dy: (Math.random() - 0.5) * 6,
+            life: 100
+          });
+        }
+      }
+      draw() {
+        this.particles.forEach(p => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+          ctx.fillStyle = this.color;
+          ctx.fill();
+        });
+      }
+      update() {
+        this.particles.forEach(p => {
+          p.x += p.dx;
+          p.y += p.dy;
+          p.dy += 0.05;
+          p.life--;
+        });
+        this.particles = this.particles.filter(p => p.life > 0);
+      }
+    }
+
+    let fireworks = [];
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      fireworks.forEach(fw => {
+        fw.update();
+        fw.draw();
+      });
+      fireworks = fireworks.filter(fw => fw.particles.length > 0);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    setInterval(() => {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height / 2;
+      const colors = ["#ff6666", "#66ccff", "#99ff99", "#ffcc66", "#cc99ff", "#ff66cc"];
+      fireworks.push(new Firework(x, y, colors[Math.floor(Math.random()*colors.length)]));
+    }, 1500);
+
+    window.onresize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+  </script>
+</body>
+</html>
