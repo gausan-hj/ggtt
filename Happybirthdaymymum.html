@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>🎂 妈妈 · 生日快乐 🎉</title>
+  <!-- Font Awesome 6 图标库 (用于装饰) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
+      min-height: 100vh;
+      background: #1e2b1c;  /* 深橄榄绿基底 */
+      background-image: radial-gradient(circle at 20% 30%, #3a5a32 0%, #1a2a18 90%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-x: hidden;
+    }
+
+    /* 主卡片 — 橄榄绿毛玻璃质感 */
+    .birthday-card {
+      position: relative;
+      max-width: 680px;
+      width: 100%;
+      background: rgba(60, 80, 50, 0.25);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 60px 60px 40px 40px;
+      padding: 32px 24px 40px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(140, 180, 100, 0.3);
+      border: 1px solid rgba(160, 200, 120, 0.3);
+      transition: transform 0.2s ease;
+      text-align: center;
+      color: #f2f7e6;
+    }
+
+    /* 柔和光晕 — 橄榄色 */
+    .birthday-card::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: -10%;
+      width: 120%;
+      height: 140%;
+      background: radial-gradient(circle at 30% 20%, rgba(160, 200, 120, 0.12), transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* 头部 */
+    .hero {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .hero h1 {
+      font-size: 3.8rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #d4e8b0, #b5d38b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 30px rgba(150, 200, 100, 0.3);
+      display: inline-block;
+      padding: 0 8px;
+    }
+
+    .hero .age-badge {
+      display: inline-block;
+      background: rgba(130, 170, 90, 0.25);
+      border: 1px solid #9bc17a;
+      padding: 6px 20px;
+      border-radius: 60px;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #d4e8b0;
+      margin-left: 6px;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 0 20px rgba(130, 180, 80, 0.2);
+    }
+
+    .sub-greeting {
+      font-size: 1.3rem;
+      opacity: 0.95;
+      margin-top: 6px;
+      letter-spacing: 2px;
+      color: #d0e0bc;
+      font-weight: 400;
+    }
+
+    .sub-greeting i {
+      color: #c5dba8;
+      margin: 0 6px;
+    }
+
+    /* ----- 互动问答区 (无按钮) ----- */
+    .interactive-area {
+      margin: 28px 0 20px;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    /* 问题卡片 */
+    .question-box {
+      background: rgba(50, 80, 40, 0.35);
+      backdrop-filter: blur(6px);
+      padding: 20px 24px;
+      border-radius: 60px;
+      border: 1px solid rgba(160, 200, 120, 0.25);
+      width: 100%;
+      max-width: 480px;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .question-box p {
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: #edf5df;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .question-box p i {
+      color: #bcdb96;
+      margin: 0 6px;
+    }
+
+    /* 选项容器 (点击即触发，无按钮感) */
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .option-item {
+      background: rgba(100, 140, 75, 0.2);
+      backdrop-filter: blur(4px);
+      padding: 12px 24px;
+      border-radius: 60px;
+      border: 1px solid rgba(160, 200, 120, 0.2);
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #e4f0d0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 1 auto;
+    }
+
+    .option-item i {
+      color: #bcdb96;
+      font-size: 1.2rem;
+    }
+
+    .option-item:hover {
+      transform: translateY(-3px) scale(1.02);
+      background: rgba(130, 180, 90, 0.3);
+      border-color: #b5d38b;
+      box-shadow: 0 10px 24px rgba(120, 180, 80, 0.2);
+    }
+
+    .option-item:active {
+      transform: scale(0.95);
+    }
+
+    /* 回答反馈区域 */
+    .feedback-area {
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .feedback-message {
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #d4e8b0;
+      background: rgba(40, 70, 30, 0.5);
+      padding: 14px 28px;
+      border-radius: 60px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(140, 180, 100, 0.2);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s;
+    }
+
+    .feedback-message i {
+      color: #d4e8b0;
+      font-size: 1.8rem;
+    }
+
+    /* 特效展示区 (气球、烟花等动态图标) */
+    #effects-container {
+      position: relative;
+      min-height: 100px;
+      margin: 10px 0 16px;
+      border-radius: 40px;
+      background: rgba(30, 50, 25, 0.3);
+      backdrop-filter: blur(2px);
+      border: 1px solid rgba(140, 180, 100, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 14px 10px;
+      transition: all 0.2s;
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+    }
+
+    #effects-container .effect-item {
+      font-size: 2.6rem;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+      animation: floatPop 1.8s infinite alternate ease-in-out;
+      transition: transform 0.2s;
+    }
+
+    #effects-container .effect-item:nth-child(odd) {
+      animation-duration: 2.2s;
+    }
+    #effects-container .effect-item:nth-child(3n) {
+      animation-duration: 1.6s;
+      animation-delay: 0.3s;
+    }
+    #effects-container .effect-item:nth-child(5n+2) {
+      animation-delay: 0.7s;
+    }
+
+    @keyframes floatPop {
+      0% { transform: translateY(0px) scale(0.9); opacity: 0.7; }
+      100% { transform: translateY(-16px) scale(1.1); opacity: 1; }
+    }
+
+    /* 脚注 */
+    .footer-note {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      opacity: 0.7;
+      letter-spacing: 1px;
+      color: #b6cf9a;
+      border-top: 1px solid rgba(140, 180, 100, 0.15);
+      padding-top: 18px;
+    }
+
+    .footer-note i {
+      color: #bcdb96;
+    }
+
+    /* 响应式 */
+    @media (max-width: 480px) {
+      .birthday-card {
+        padding: 24px 16px 30px;
+      }
+      .hero h1 {
+        font-size: 2.6rem;
+      }
+      .hero .age-badge {
+        font-size: 1.3rem;
+        padding: 4px 14px;
+      }
+      .question-box p {
+        font-size: 1.1rem;
+      }
+      .option-item {
+        font-size: 0.95rem;
+        padding: 10px 18px;
+      }
+      .feedback-message {
+        font-size: 1.1rem;
+        padding: 10px 20px;
+      }
+      #effects-container .effect-item {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="birthday-card">
+  <!-- 头部 -->
+  <div class="hero">
+    <h1>妈妈 <span class="age-badge">🎂 永远</span></h1>
+    <div class="sub-greeting">
+      <i class="fas fa-leaf"></i> 生日快乐 · 我最爱的人 <i class="fas fa-leaf"></i>
+    </div>
+  </div>
+
+  <!-- 互动问答区 (无按钮，全点击交互) -->
+  <div class="interactive-area">
+    <!-- 问题区域 -->
+    <div class="question-box" id="questionBox">
+      <p><i class="fas fa-question-circle"></i> 妈妈，您最喜欢什么花？ <i class="fas fa-question-circle"></i></p>
+      <div class="options" id="optionsContainer">
+        <!-- 选项由 js 动态生成，保证灵活性 -->
+      </div>
+    </div>
+
+    <!-- 反馈 & 特效展示 -->
+    <div class="feedback-area" id="feedbackArea">
+      <div class="feedback-message" id="feedbackMessage">
+        <i class="fas fa-heart" style="color: #bcdb96;"></i> 点击上面的选项吧 💚
+      </div>
+    </div>
+
+    <!-- 特效容器 (动态图标) -->
+    <div id="effects-container">
+      <span class="effect-item">🌿</span>
+      <span class="effect-item">🌸</span>
+      <span class="effect-item">🍃</span>
+      <span class="effect-item">💚</span>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    <i class="fas fa-hand-peace"></i> 轻轻点击 · 爱意满满 <i class="fas fa-hand-peace"></i>
+  </div>
+</div>
+
+<script>
+  (function() {
+    "use strict";
+
+    // ----- 数据：问题库 (每个问题包含 问题文本, 选项数组, 每个选项对应的反馈和特效) -----
+    const questionBank = [
+      {
+        question: '🌷 妈妈，您最喜欢什么花？',
+        options: [
+          { label: '玫瑰', icon: '🌹', feedback: '🌹 玫瑰代表您美丽的笑容，永远动人！', effects: ['🌹', '🌷', '🌸', '💐'] },
+          { label: '康乃馨', icon: '🌺', feedback: '🌺 康乃馨是母亲之花，温柔又坚强，就像您！', effects: ['🌺', '🌸', '🌷', '💐'] },
+          { label: '向日葵', icon: '🌻', feedback: '🌻 向日葵永远向着阳光，您就是我生命里的光！', effects: ['🌻', '☀️', '🌿', '💛'] },
+          { label: '百合', icon: '🌼', feedback: '🌼 百合纯洁高雅，正如您对我的爱，无私又珍贵。', effects: ['🌼', '🌿', '🌸', '✨'] }
+        ]
+      },
+      {
+        question: '🍰 您最想和我一起做什么？',
+        options: [
+          { label: '散步聊天', icon: '🚶‍♀️', feedback: '🚶‍♀️ 和您一起散步，听您讲故事，是最幸福的时光。', effects: ['🌿', '🍃', '🌳', '💚'] },
+          { label: '一起做饭', icon: '🍳', feedback: '🍳 您做的饭菜是全世界最香的，我想和您学做菜！', effects: ['🍲', '🥘', '🌿', '❤️'] },
+          { label: '旅行看风景', icon: '✈️', feedback: '✈️ 带您去看世界，每一处风景都不及您温暖的笑容。', effects: ['🌍', '🌴', '☀️', '💙'] },
+          { label: '窝在家聊天', icon: '🏠', feedback: '🏠 只要和您在一起，哪里都是最安心的地方。', effects: ['🏡', '☕', '🌙', '💖'] }
+        ]
+      },
+      {
+        question: '🌟 您希望我成为什么样的人？',
+        options: [
+          { label: '快乐的人', icon: '😊', feedback: '😊 您的快乐就是我最大的心愿，我会一直开心下去！', effects: ['😊', '🌟', '💛', '🌿'] },
+          { label: '勇敢的人', icon: '💪', feedback: '💪 您教会我勇敢，我会带着您的爱勇往直前。', effects: ['💪', '🔥', '🌳', '💚'] },
+          { label: '善良的人', icon: '🤗', feedback: '🤗 像您一样善良，温柔对待世界，我记住了。', effects: ['🤗', '🌸', '🌼', '💖'] },
+          { label: '自由的人', icon: '🕊️', feedback: '🕊️ 您给我翅膀，让我自由飞翔，谢谢妈妈。', effects: ['🕊️', '☁️', '🌟', '💙'] }
+        ]
+      }
+    ];
+
+    // 当前问题索引
+    let currentQuestionIndex = 0;
+    // 当前特效图标
+    let currentEffects = ['🌿', '🌸', '🍃', '💚'];
+
+    // DOM 元素
+    const questionBox = document.getElementById('questionBox');
+    const optionsContainer = document.getElementById('optionsContainer');
+    const feedbackMessage = document.getElementById('feedbackMessage');
+    const effectsContainer = document.getElementById('effects-container');
+
+    // ----- 辅助函数 -----
+    function renderIcons(icons) {
+      effectsContainer.innerHTML = '';
+      const shuffled = [...icons].sort(() => Math.random() - 0.5);
+      shuffled.forEach(icon => {
+        const span = document.createElement('span');
+        span.className = 'effect-item';
+        span.textContent = icon;
+        span.style.animationDelay = (Math.random() * 0.6) + 's';
+        effectsContainer.appendChild(span);
+      });
+      currentEffects = shuffled;
+    }
+
+    // 更新反馈消息 (带动画)
+    function setFeedback(text, icon = '❤️') {
+      feedbackMessage.innerHTML = `<i class="fas fa-heart" style="color: #bcdb96;"></i> ${text}`;
+      // 轻微闪烁反馈
+      feedbackMessage.style.transition = 'transform 0.15s, background 0.2s';
+      feedbackMessage.style.transform = 'scale(0.96)';
+      setTimeout(() => {
+        feedbackMessage.style.transform = 'scale(1)';
+      }, 150);
+    }
+
+    // 加载指定问题
+    function loadQuestion(index) {
+      const qData = questionBank[index % questionBank.length];
+      if (!qData) return;
+
+      // 更新问题文本
+      const p = questionBox.querySelector('p');
+      if (p) {
+        p.innerHTML = `<i class="fas fa-question-circle"></i> ${qData.question} <i class="fas fa-question-circle"></i>`;
+      }
+
+      // 生成选项 (无按钮，div 点击)
+      optionsContainer.innerHTML = '';
+      qData.options.forEach((opt, idx) => {
+        const div = document.createElement('div');
+        div.className = 'option-item';
+        div.innerHTML = `${opt.icon} ${opt.label}`;
+        // 点击选项触发反馈 + 特效 + 进入下一题
+        div.addEventListener('click', function(e) {
+          e.stopPropagation();
+          // 触感反馈
+          if (navigator.vibrate) navigator.vibrate(15);
+
+          // 1. 显示反馈
+          setFeedback(opt.feedback, opt.icon);
+
+          // 2. 渲染特效
+          renderIcons(opt.effects);
+
+          // 3. 额外彩蛋：消息区闪烁
+          feedbackMessage.style.background = 'rgba(80, 120, 60, 0.5)';
+          setTimeout(() => {
+            feedbackMessage.style.background = 'rgba(40, 70, 30, 0.5)';
+          }, 400);
+
+          // 4. 延迟切换到下一题 (让妈妈看到反馈)
+          setTimeout(() => {
+            // 循环到下一个问题
+            currentQuestionIndex = (currentQuestionIndex + 1) % questionBank.length;
+            loadQuestion(currentQuestionIndex);
+            // 同时让反馈区显示提示 (但不覆盖新问题)
+            // 但为了连贯，让反馈区保持新问题对应的默认提示
+            const nextQ = questionBank[currentQuestionIndex];
+            if (nextQ) {
+              // 但不要覆盖刚选的反馈，让反馈保留几秒再变
+              // 我们保留反馈，但改变问题，所以反馈暂时不变
+              // 但在 loadQuestion 里我们会保留反馈，但为了体验，加载新问题时清空反馈？
+              // 更好的体验：加载新问题后，反馈变为新问题的“点击选项”提示
+              // 但为了显示刚刚的选择，我们延迟1.5s再变
+              setTimeout(() => {
+                setFeedback('✨ 妈妈，再选一个吧 ✨');
+              }, 1200);
+            }
+          }, 1800); // 显示反馈1.8s后切换
+        });
+        optionsContainer.appendChild(div);
+      });
+    }
+
+    // 初始化：加载第一个问题，并设置默认特效
+    function init() {
+      // 随机初始特效
+      const defaultIcons = ['🌿', '🌸', '🍃', '💚', '🌱', '🍀'];
+      renderIcons(defaultIcons);
+      setFeedback('🌼 妈妈，点击选项告诉我吧 💚');
+      loadQuestion(0);
+    }
+
+    // 额外彩蛋：点击反馈区也可以切换特效 (但不影响问答流程)
+    feedbackMessage.addEventListener('click', function() {
+      // 随机换一些图标
+      const emojiPool = ['🌿', '🌸', '🍃', '💚', '🌱', '🍀', '🌼', '🌺', '💐', '🌻', '🌟', '✨'];
+      const newIcons = [];
+      for (let i = 0; i < 6; i++) {
+        newIcons.push(emojiPool[Math.floor(Math.random() * emojiPool.length)]);
+      }
+      renderIcons(newIcons);
+      if (navigator.vibrate) navigator.vibrate(10);
+    });
+
+    // 启动
+    init();
+
+  })();
+</script>
+</body>
+</html>
